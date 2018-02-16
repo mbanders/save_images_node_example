@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Hello User "<%= id %>"</h1>
+
+<form method="post" action="/save"
+      ref="uploadForm" id="uploadForm"
+      encType="multipart/form-data">
+  <input type="file" name="map" accept="image/*">
+  <input type="submit">
+</form>
+
+</body>
+</html>
