@@ -8,6 +8,7 @@ const config = require("./config");
 const dbName = 'myproject';
 
 var mongo_client = null;
+var db = null;
 
 // Use connect method to connect to the server
 module.exports.connect_to_mongo = function(callback) {
@@ -15,24 +16,30 @@ module.exports.connect_to_mongo = function(callback) {
 	assert.equal(null, err);
 	console.log("Connected successfully to mongo server");
 	mongo_client = client;
-	//const db = client.db(dbName);
+	db = mongo_client.db(dbName);
     });
     callback();
 }
 
+module.exports.find_image = function(id, callback) {
+    console.log("finding image for " + id);
+    const devices = db.collection("documents");
+    devices.findOne({"user_id": new mongo.ObjectId(id)}, (err, doc) => {
+        callback(err, doc);
+    });
+}
+
 module.exports.find_device = function(id, callback) {
-    var db = mongo_client.db(dbName);
-    var devices = db.collection("devices");
-    devices.findOne({"_id": new mongo.ObjectId(id)}, (err, doc) => {
+    const devices = db.collection("documents");
+    devices.findOne({"user_id": new mongo.ObjectId(id)}, (err, doc) => {
 	callback(doc);
     });
 }
 
-const insertDocuments = function(docs, db, callback) {
-    // Get the documents collection
+module.exports.save_data = function(docs, callback) {
     const collection = db.collection('documents');
-    // Insert some documents
-    collection.insertMany(docs, function(err, result) {
+    docs.user_id = new mongo.ObjectId(docs.user_id);
+    collection.insertMany([docs], function(err, result) {
         assert.equal(err, null);
         console.log("Inserted documents into the collection");
         callback(result);
