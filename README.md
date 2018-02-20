@@ -1,12 +1,20 @@
 # save_images_node_example
 Simple node webserver that lets you upload and retrieve images by user.
 
-Run the server:
+## To run the server
+First create a config file `config.sh` with information on what mongo database to connect to:
+```js
+module.exports.mongodb_host: 'mongodb://10.0.0.20:27017'
+```
+
+That file is read by `mymongo.js` which actually connects to the mongo database.
+
+The main webserver is run like so:
 ```sh
     nodejs main.js
 ```
 
-It provides three urls that are followed by any valid mongo ObjectId which is used for storing and retrieving data:
+That provides three urls that are followed by any valid mongo object id which is used for storing and retrieving data:
 
 * http://localhost:80/d/5a8c54d67f3a093bfff670eb
 * http://localhost:80/image/5a8c54d67f3a093bfff670eb
