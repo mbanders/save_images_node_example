@@ -2,46 +2,39 @@ const mongo = require('mongodb');
 const MongoClient = mongo.MongoClient;
 const assert = require('assert');
 
+// Get mongodb host, username, etc
 const config = require("./config");
  
 // Database Name
 const dbName = 'myproject';
+const collectionName = 'images';
 
-var mongo_client = null;
-var db = null;
+var images = null;
 
-// Use connect method to connect to the server
+// Connect to mongodb server
 module.exports.connect_to_mongo = function(callback) {
-    MongoClient.connect(config.mongodb_host, function(err, client) {
+    MongoClient.connect(config.mongodb_host, (err, client) => {
 	assert.equal(null, err);
-	console.log("Connected successfully to mongo server");
-	mongo_client = client;
-	db = mongo_client.db(dbName);
+	console.log("Connected successfully to mongo server at " + config.mongodb_host);
+	images = client.db(dbName).collection(collectionName);
     });
     callback();
 }
 
-module.exports.find_image = function(id, callback) {
-    console.log("finding image for " + id);
-    const devices = db.collection("documents");
-    devices.findOne({"user_id": new mongo.ObjectId(id)}, (err, doc) => {
+// Retrieve the image
+module.exports.get_image = function(id, callback) {
+    images.findOne({"_id": id}, (err, doc) => {
         callback(err, doc);
     });
 }
 
-module.exports.find_device = function(id, callback) {
-    const devices = db.collection("documents");
-    devices.findOne({"user_id": new mongo.ObjectId(id)}, (err, doc) => {
-	callback(doc);
-    });
-}
-
-module.exports.save_data = function(docs, callback) {
-    const collection = db.collection('documents');
-    docs.user_id = new mongo.ObjectId(docs.user_id);
-    collection.insertMany([docs], function(err, result) {
-        assert.equal(err, null);
-        console.log("Inserted documents into the collection");
-        callback(result);
+// Save the image
+module.exports.save_image = function(doc, callback) {
+    images.findOneAndDelete({_id: doc._id}, (err, result) => {
+        images.insert(doc, (err, result) => {
+            assert.equal(err, null);
+            //console.log("Inserted image.");
+            callback(err, result);
+        });
     });
 }

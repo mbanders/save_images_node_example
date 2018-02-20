@@ -4,46 +4,47 @@ const mymongo = require("./mymongo");
 const app = express();
 const port = 80;
 
-app.use(fileUpload());
+// Limit file upload size to 10 MB
+const max_img_mb = 10;
+app.use(fileUpload({
+    limits: { fileSize: max_img_mb * 1024 * 1024 },
+}));
 
 app.set('view engine', 'ejs');
 
 
-// Ask for file
+// Retrieve file
 app.get('/image/:id', (req, res) => {
-    mymongo.find_image(req.params.id, (err, doc) => {
+    mymongo.get_image(req.params.id, (err, doc) => {
 	if (!err && doc) {
-            res.contentType(doc.img_mimetype);
-            res.send(new Buffer.from(doc.img_data, 'base64'));
+            res.contentType(doc.imgType);
+            res.send(new Buffer.from(doc.imgData, 'base64'));
 	} else {
 	    res.send();
 	}
     });
 });
 
+// Main default page for showing image and uploading a new one
 app.get("/d/:id", (req, res) => {
-    mymongo.find_device(req.params.id, (device) => {
-	if (device) {
-            res.render('index', {user: device});
-	} else {
-	    res.render('index', {user: {user_id: req.params.id, firstname: "New User"}});
-	}
-    });
+    res.render('index', {user_id: req.params.id});
 });
 
 
-// Save File
+// Save file
 app.post("/save/:id", (req, res) => {
     if (!req.files) {
         return res.status(400).send('No files were uploaded.');
     }
-    var doc = {firstname: "john",
-	       lastname: "smith",
-	       user_id: req.params.id,
-	       img_data: req.files.map.data.toString('base64'),
-	       img_mimetype: req.files.map.mimetype
+    // You can include various keys, but
+    // the required keys are: _id, imgData, imgType
+    var doc = {firstName: "john",
+	       lastName: "smith",
+	       _id: req.params.id,
+	       imgData: req.files.map.data.toString('base64'),
+	       imgType: req.files.map.mimetype
 	      }
-    mymongo.save_data(doc, (err) => {
+    mymongo.save_image(doc, (err, result) => {
 	if (err) {
           return res.status(500).send(err);
         }
@@ -52,7 +53,7 @@ app.post("/save/:id", (req, res) => {
 });
 
 
-// Run Server
+// Connect to database and run web server
 mymongo.connect_to_mongo( () =>{
     app.listen(port, () => {
         console.log("Web server now listening on port " + port);
