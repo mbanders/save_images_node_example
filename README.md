@@ -14,9 +14,8 @@ The main webserver is run like so:
     nodejs main.js
 ```
 
-That provides three urls that are followed by any valid mongo object id which is used for storing and retrieving data:
+That provides two urls that are followed by any valid mongo object id:
 
 * http://localhost:80/d/5a8c54d67f3a093bfff670eb
 * http://localhost:80/image/5a8c54d67f3a093bfff670eb
-* http://localhost:80/save/5a8c54d67f3a093bfff670eb
 
