@@ -5,7 +5,7 @@
 
 <h1>User "<%= user_id %>".</h1>
 
-<img src="/image/<%= user_id %>"><br>
+<img src="/image/<%= user_id %>" onerror="this.style.display='none'"/><br>
 
 <p>Upload a new image:</p>
 <form method="post" action="/d/<%= user_id %>"
