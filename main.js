@@ -20,7 +20,7 @@ app.get('/image/:id', (req, res) => {
     mymongo.get_image(req.params.id, (err, doc) => {
         if (!err && doc) {
             res.contentType(doc.imgType);
-            res.send(new Buffer.from(doc.imgData, 'base64'));
+            res.send(doc.imgData);
         } else {
             res.send();
         }
@@ -53,7 +53,7 @@ app.post("/d/:id", (req, res) => {
         firstName: "john",
         lastName: "smith",
         _id: req.params.id,
-        imgData: req.files.map.data.toString('base64'),
+        imgData: req.files.map.data,
         imgType: req.files.map.mimetype
     }
     mymongo.save_image(doc, (err, result) => {

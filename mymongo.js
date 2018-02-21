@@ -30,12 +30,18 @@ module.exports.get_image = function(id, callback) {
     images.findOne({
         "_id": id
     }, (err, doc) => {
+        if (doc) {
+            // Convert to buffer from a string
+            doc.imgData = new Buffer.from(doc.imgData, 'base64');
+        }
         callback(err, doc);
     });
 }
 
 // Save image
 module.exports.save_image = function(doc, callback) {
+    // Convert to string from data
+    doc.imgData = doc.imgData.toString('base64');
     images.findOneAndDelete({
         _id: doc._id
     }, (err, result) => {
