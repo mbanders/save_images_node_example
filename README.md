@@ -2,6 +2,11 @@
 Simple node webserver that lets you upload and retrieve images by user.
 
 ## To run the server
+Install needed libraries:
+```js
+npm install mongodb express express-fileupload
+```
+
 Create a config file `config.sh` with information on what mongo database to connect to, and with what credentials:
 ```js
 module.exports = {
