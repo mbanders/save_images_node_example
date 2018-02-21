@@ -2,12 +2,21 @@
 Simple node webserver that lets you upload and retrieve images by user.
 
 ## To run the server
-First create a config file `config.sh` with information on what mongo database to connect to:
+Create a config file `config.sh` with information on what mongo database to connect to, and with what credentials:
 ```js
-module.exports.mongodb_host: 'mongodb://10.0.0.20:27017'
+module.exports = {
+    mongodb: {
+        authSource: 'admindb',
+        auth: {
+            user: 'whatever',
+            password: 'example'
+        }
+    },
+    mongodb_host: 'mongodb://10.0.0.20:27017'
+}
 ```
 
-That file is read by `mymongo.js` which actually connects to the mongo database.
+The above file is read by `mymongo.js`, which contains code to connect to the mongo database.
 
 The main webserver is run like so:
 ```sh
