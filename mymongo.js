@@ -5,12 +5,14 @@ const assert = require('assert');
 // Get mongodb host, username, etc
 const config = require("./config");
 
-// Database Name
+// Database and Collection Names
 const dbName = 'my_database';
 const imgCollection = 'images';
 const usrCollection = 'devices';
 
+// Collections
 var images = null;
+var users = null;
 
 // Connect to mongodb server
 module.exports.connect_to_mongo = function(callback) {
