@@ -6,7 +6,7 @@ const assert = require('assert');
 const config = require("./config");
 
 // Database Name
-const dbName = 'myproject';
+const dbName = 'my_database';
 const imgCollection = 'images';
 const usrCollection = 'devices';
 
@@ -14,7 +14,7 @@ var images = null;
 
 // Connect to mongodb server
 module.exports.connect_to_mongo = function(callback) {
-    MongoClient.connect(config.mongodb_host, (err, client) => {
+    MongoClient.connect(config.mongodb_host, config.mongodb, (err, client) => {
         assert.equal(null, err);
         console.log("Connected successfully to mongo server at " + config.mongodb_host);
         images = client.db(dbName).collection(imgCollection);
