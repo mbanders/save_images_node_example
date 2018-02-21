@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<meta http-equiv="cache-control" content="no-cache" />
 <html>
 <body>
 
@@ -7,7 +8,7 @@
 <img src="/image/<%= user_id %>"><br>
 
 <p>Upload a new image:</p>
-<form method="post" action="/save/<%= user_id %>"
+<form method="post" action="/d/<%= user_id %>"
       ref="uploadForm" id="uploadForm"
       encType="multipart/form-data">
   <input type="file" name="map" accept="image/*">

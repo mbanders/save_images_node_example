@@ -32,7 +32,7 @@ app.get("/d/:id", (req, res) => {
 
 
 // Save file
-app.post("/save/:id", (req, res) => {
+app.post("/d/:id", (req, res) => {
     if (!req.files) {
         return res.status(400).send('No files were uploaded.');
     }
@@ -48,7 +48,7 @@ app.post("/save/:id", (req, res) => {
 	if (err) {
           return res.status(500).send(err);
         }
-        res.send('File uploaded!');
+	res.render('index', {user_id: req.params.id});
     });
 });
 
