@@ -29,8 +29,15 @@ app.get('/image/:id', (req, res) => {
 
 // Main default page for showing image and uploading a new one
 app.get("/d/:id", (req, res) => {
-    res.render('index', {
-        user_id: req.params.id
+    mymongo.get_user(req.params.id, (err, doc) => {
+	if (doc) {
+            res.render('index', {
+                user_id: req.params.id
+            });
+	} else {
+            res.status(404);
+	    res.send("Sorry, device not found for id " + req.params.id);
+	}
     });
 });
 

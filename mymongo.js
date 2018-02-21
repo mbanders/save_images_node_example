@@ -7,7 +7,8 @@ const config = require("./config");
 
 // Database Name
 const dbName = 'myproject';
-const collectionName = 'images';
+const imgCollection = 'images';
+const usrCollection = 'devices';
 
 var images = null;
 
@@ -16,12 +17,13 @@ module.exports.connect_to_mongo = function(callback) {
     MongoClient.connect(config.mongodb_host, (err, client) => {
         assert.equal(null, err);
         console.log("Connected successfully to mongo server at " + config.mongodb_host);
-        images = client.db(dbName).collection(collectionName);
+        images = client.db(dbName).collection(imgCollection);
+	users = client.db(dbName).collection(usrCollection);
     });
     callback();
 }
 
-// Retrieve the image
+// Retrieve image
 module.exports.get_image = function(id, callback) {
     images.findOne({
         "_id": id
@@ -30,7 +32,7 @@ module.exports.get_image = function(id, callback) {
     });
 }
 
-// Save the image
+// Save image
 module.exports.save_image = function(doc, callback) {
     images.findOneAndDelete({
         _id: doc._id
@@ -40,5 +42,12 @@ module.exports.save_image = function(doc, callback) {
             //console.log("Inserted image.");
             callback(err, result);
         });
+    });
+}
+
+// Retrieve user
+module.exports.get_user = function(id, callback) {
+    users.findOne({_id: mongo.ObjectId(id)}, (err, doc) => {
+	callback(err, doc);
     });
 }
