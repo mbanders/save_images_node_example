@@ -55,7 +55,7 @@ module.exports.save_image = function(doc, callback) {
 
 // Retrieve user
 module.exports.get_user = function(id, callback) {
-    users.findOne({_id: mongo.ObjectId(id)}, (err, doc) => {
+    users.findOne({_id: id}, (err, doc) => {
 	callback(err, doc);
     });
 }
