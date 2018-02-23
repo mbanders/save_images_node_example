@@ -1,0 +1,24 @@
+{
+  "name": "save_images_node_example",
+  "version": "1.0.0",
+  "description": "Example saving images to mongodb",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mbanders/save_images_node_example.git"
+  },
+  "author": "Mike Anderson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mbanders/save_images_node_example/issues"
+  },
+  "homepage": "https://github.com/mbanders/save_images_node_example#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "express-fileupload": "^0.4.0",
+    "mongodb": "^3.0.3"
+  }
+}
